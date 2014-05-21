@@ -130,10 +130,10 @@ elseif strcmp(subr,'batch')
         snrs=batch_ip_strength(input_smpd,ip_smpd,inputf,ipf,input_smp_id,ip_smp_id,[]);
         %        enc=batch_comp_encode(input_smpd,ip_smpd,inputf,ipf,input_smp_id,ip_smp_id,tf_name,bld,[]);
         if isempty(options('-b'))||~strcmpi(options('-b'),'off')
-            [bidx,input_scale]=multisample_norm(input_smpd,input_smp_id);            
+            [bidx,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);            
         else
             bidx=ones(length(input_smp_id),1);
-            [~,input_scale]=multisample_norm(input_smpd,input_smp_id);
+            [~,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);
         end
         spc=batch_spectrum(input_smpd,inputf,input_smp_id,bld,[]);
         if isKey(options,'-o')&&~isempty(options('-o')), outf=options('-o');
@@ -190,6 +190,7 @@ elseif strcmp(subr,'batch')
             fprintf(f,['Batch effects detected. ' num2str(max(bidx)) ' batches identified.']);
         end
         fclose(f);
+        dlmwrite([outf '-dendrogram.tsv'],Z,'delimiter','\t','newline','unix');
 end
 matlabpool close;
 
@@ -470,7 +471,7 @@ parfor i=1:length(fin)
         end
 end
 
-function [bidx,ip_scale]=multisample_norm(input_smpd,input_smp_id)
+function [bidx,ip_scale,Z]=multisample_norm(input_smpd,input_smp_id)
     num_samples=length(input_smpd);
     for i=1:num_samples %create a matrix of genome wide 
         ipt=input_smpd{i};ipt=ipt(input_smp_id{i});
