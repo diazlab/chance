@@ -129,11 +129,17 @@ elseif strcmp(subr,'batch')
         %compute IP strengths, compare with ENCODE (needs retraining), 
         snrs=batch_ip_strength(input_smpd,ip_smpd,inputf,ipf,input_smp_id,ip_smp_id,[]);
         %        enc=batch_comp_encode(input_smpd,ip_smpd,inputf,ipf,input_smp_id,ip_smp_id,tf_name,bld,[]);
-        if isempty(options('-b'))||~strcmpi(options('-b'),'off')
-            [bidx,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);            
+        if length(input_smpd)>1
+            if isempty(options('-b'))||~strcmpi(options('-b'),'off')
+                [bidx,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);            
+            else
+                bidx=ones(length(input_smp_id),1);
+                [~,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);
+            end
         else
-            bidx=ones(length(input_smp_id),1);
-            [~,input_scale,Z]=multisample_norm(input_smpd,input_smp_id);
+            bidx=1;
+            input_scale=1;
+            Z=[];
         end
         spc=batch_spectrum(input_smpd,inputf,input_smp_id,bld,[]);
         if isKey(options,'-o')&&~isempty(options('-o')), outf=options('-o');
@@ -190,7 +196,9 @@ elseif strcmp(subr,'batch')
             fprintf(f,['Batch effects detected. ' num2str(max(bidx)) ' batches identified.']);
         end
         fclose(f);
-        dlmwrite([outf '-dendrogram.tsv'],Z,'delimiter','\t','newline','unix');
+        if ~isempty(Z)
+            dlmwrite([outf '-dendrogram.tsv'],Z,'delimiter','\t','newline','unix');
+        end
 end
 matlabpool close;
 

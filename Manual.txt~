@@ -83,7 +83,7 @@ be obtained from https://github.com/songlab/chance.
 
 4.  To start CHANCE: `./run_chance.sh path_to_mcr` where `path_to_mcr`
     is the path to the MCR you installed,the default is
-    `/usr/local/MATLAB/MATLAB_Compiler_Runtime/v80/`
+    `/usr/local/MATLAB/MATLAB_Compiler_Runtime/v717/`
 
 ## If you are running 64bit Windows 7
 
