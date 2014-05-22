@@ -1,6 +1,6 @@
 Welcome to CHANCE-HT!
 =================
-Download the pdf [manual](https://github.com/songlab/chance/master/Manual.pdf) or browse it [online](https://github.com/diazlab/chance/wiki/).
+Download the pdf [manual](https://github.com/songlab/chance/raw/master/Manual.pdf) or browse it [online](https://github.com/diazlab/chance/wiki/).
 =================
 Download binary executables and sample data from [sourceforge](https://sourceforge.net/projects/chanceht/) or from the [Diaz lab website](http://diazlab.ucsf.edu/chance.html).
 ========
